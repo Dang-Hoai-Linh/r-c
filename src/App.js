@@ -21,31 +21,23 @@ export default class App extends Component {
 
     axios.get("user", config).then(
       (res) => {
-        this.setUser(res.data);
+        this.setState({
+          user: res.data,
+        });
       },
       (err) => {
-        console.log(err);                                                                                                                                                                                         
+        console.log(err);
       }
     );
   };
 
-  setUser = (user) => {
-    this.setState({
-      user: user,
-    });
-  };
-  
   render() {
     return (
       <BrowserRouter>
         <div>
-          <Nav user={this.state.user} setUser={this.setUser} />
+          <Nav user={this.state.user} />
           <Routes>
-            <Route
-              path="/"
-              exact
-              element={<Home/>}
-            />
+            <Route path="/" exact element={<Home user={this.state.user} />} />
             {/* <Route
               path="/"
               exact
