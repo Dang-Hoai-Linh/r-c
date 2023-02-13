@@ -1,47 +1,75 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
-export default class Register extends Component {
-  handleSubmit = (e) => {
+const Register = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [checkpassword, setCheckPassword] = useState("");
+
+  const handleChangeUsername = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleChangeCheckPassword = (e) => {
+    setCheckPassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      taikhoan: this.taikhoan,
-      matkhau: this.matkhau,
-      checkmatkhau: this.checkmatkhau,
+      taikhoan: username,
+      matkhau: password,
+      checkmatkhau: checkpassword,
     };
     axios
       .post("register", data)
       .then((res) => {
         console.log(res);
+        toast.success("Đăng ký thành công!");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  render() {
-    return (
+
+  return (
+    <>
+      <div className="App">
+        <Link to={"/login"}>Đăng nhập</Link>
+        <br />
+        <Link to={"/register"}>Đăng ký</Link>
+      </div>
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <h3>Đăng ký</h3>
           <input
             type="text"
-            onChange={(e) => (this.taikhoan = e.target.value)}
+            onChange={handleChangeUsername}
             placeholder="Tài khoản"
           />
           <input
             type="password"
-            onChange={(e) => (this.matkhau = e.target.value)}
+            onChange={handleChangePassword}
             placeholder="Mật khẩu"
           />
           <input
             type="password"
-            onChange={(e) => (this.checkmatkhau = e.target.value)}
+            onChange={handleChangeCheckPassword}
             placeholder="Xác nhận mật khẩu"
           />
           <button>OK</button>
         </form>
       </div>
-    );
-  }
-}
+    </>
+  );
+};
+
+export default Register;
