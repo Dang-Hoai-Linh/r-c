@@ -1,29 +1,28 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default class Nav extends Component {
-  handleLogout = () => {
+const Nav = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
     localStorage.clear();
-    this.props.setUser(null);
+    navigate("/login");
   };
-  render() {
-    return (
-      <div className="App">
-        <Link to={"/"}>Home</Link>
-        {localStorage.getItem("token") ? (
-          <div className="App">
-            <Link to={"/login"} onClick={this.handleLogout}>
-              Đăng xuất
-            </Link>
-          </div>
-        ) : (
-          <div className="App">
-            <Link to={"/login"}>Đăng nhập</Link>
-            <br />
-            <Link to={"/register"}>Đăng ký</Link>
-          </div>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      {localStorage.getItem("token") ? (
+        <div className="App">
+          <Link to={"/"}>Home</Link>
+          <button onClick={handleLogout}>Đăng xuất</button>
+        </div>
+      ) : (
+        <div className="App">
+          <Link to={"/login"}>Đăng nhập</Link>
+          <br />
+          <Link to={"/register"}>Đăng ký</Link>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Nav;
